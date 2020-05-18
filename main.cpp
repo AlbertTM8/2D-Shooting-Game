@@ -16,27 +16,88 @@ Date:10/4/2020
 #include "N5110.h"
 #include "Character.h"
 Serial pc(USBTX, USBRX);
-// objects
+//STRUCTS
+struct State {
+int number;
+int next_state[2];
+};
+
+//OBJECTS
 Gamepad pad;
 N5110 lcd;
 Character p1;
+//Variables
+State fsm[3] = {
+        {0,{1,1}},
+        {1,{2,2}},
+        {2,{1,0}}
+        };
+volatile int Current_State = 0;
+//PROTOTYPES
+void menu();
+void GameRun();
+void Pause();
+void LevelUp();
+//FUNCTIONS
 int main()
-{// need to initialise LCD and Gamepad 
-    lcd.init();
+    {    
+    //pc.printf("Main Open");
+     //SETUPS
     pad.init();
-    
-    //Joystick intitilisation
-    Direction dir = pad.get_direction();
-    float mag = pad.get_mag();
-    
-    //character intitilisation
-    p1.init(40,22);
-    
+    lcd.init();
+    lcd.clear();
     //testing CoolTerm
-    pc.printf("CoolTerm is Connected\n");
+    //pc.printf("CoolTerm is Connected\n");
+    //pc.printf("CurrentState = %d\n", Current_State);
     
     while(1){
-        ///movement code
+    if(Current_State == 0){
+        menu();
+        }
+    else if (Current_State == 1){
+        GameRun();
+        }
+    else if (Current_State ==2){
+        Pause();
+        }
+}
+}
+
+void menu(){    
+    //pc.printf("Menu Open");
+    lcd.printString("    BoxHead    ",0,1);  
+    lcd.printString("  Press For \nWeapon\n and Start ",0,3);
+    lcd.refresh();
+        while (1) {
+        //pc.printf("While Loop + %d", g_pad.Button_A_flag);
+            if (pad.A_pressed()) {
+                //pc.printf("Button_A");
+                Current_State = fsm[0].next_state[0];
+                p1.init(40,22);     
+                return;
+            }
+            if (pad.X_pressed()) {
+                //pc.printf("Button_X");
+                Current_State = fsm[0].next_state[0];
+                p1.init(40,22); 
+                return;
+            }
+            if (pad.Y_pressed()) {
+                //pc.printf("Button_Y");
+                Current_State = fsm[0].next_state[0];
+                p1.init(40,22); 
+                return;
+            }
+        }
+    sleep();
+}
+                                                                         
+void GameRun(){
+    //pc.printf("Game Open");
+    Direction dir = pad.get_direction();
+    float mag = pad.get_mag();
+    while(1){
+        //movement code
         dir = pad.get_direction();
         mag = pad.get_mag();
         p1.update(dir, mag);
@@ -44,6 +105,36 @@ int main()
         p1.draw(lcd);
         lcd.refresh();
         wait(1.0f/10.0);
+        if (pad.start_pressed()) {
+            Current_State = fsm[Current_State].next_state[0];
+            return;
+
+        }
     }
 }
+void Pause(){
+        lcd.printString("     PAUSED     ",0,1);  
+        lcd.refresh();  
+                // put the MCU to sleep until an interrupt wakes it up
+        if (pad.start_pressed()) {
+            Current_State = fsm[Current_State].next_state[0];
+            return;
 
+        }
+        if (pad.B_pressed()) {
+            Current_State = fsm[Current_State].next_state[1];
+            lcd.clear();
+            return;
+
+        }
+        sleep();
+    }
+void LevelUp(){
+    
+    lcd.printString("     NEXT LEVEL    ",0,1);  
+    wait(2.0);
+    lcd.refresh();
+    p1.level_up();
+    Current_State = fsm[Current_State].next_state[0];
+    return;
+    }
