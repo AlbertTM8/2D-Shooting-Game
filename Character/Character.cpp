@@ -66,8 +66,8 @@ void Character::update(Direction d,float mag)
 {
     _speed = int(mag*2.0f); //scale of speed
     
-    //printf statements with char to convert
-    pcc.printf("speed = %d \n", _speed);
+    //printf statements for speed
+    //pcc.printf("speed = %d \n", _speed);
     
     // update x and y value depending on direction of movement
     // Set direction and speed according to north south directions
@@ -85,8 +85,8 @@ void Character::update(Direction d,float mag)
         _dir = 3;
     }
     //testing _x and _y
-    pcc.printf("x = %d \n", _x);
-    pcc.printf("y = %d \n", _y);
+    //pcc.printf("x = %d \n", _x);
+    //pcc.printf("y = %d \n", _y);
     
     // check the x and y position] to ensure that the paddle doesn't go off screen
     if (_x < 1) {
