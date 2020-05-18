@@ -15,6 +15,7 @@ Date:10/4/2020
 #include "Gamepad.h"
 #include "N5110.h"
 #include "Character.h"
+#include "Bullets.h"
 Serial pc(USBTX, USBRX);
 //STRUCTS
 struct State {
@@ -26,6 +27,8 @@ int next_state[2];
 Gamepad pad;
 N5110 lcd;
 Character p1;
+Bullets shot;
+
 //Variables
 State fsm[3] = {
         {0,{1,1}},
@@ -66,7 +69,8 @@ int main()
 void menu(){    
     //pc.printf("Menu Open");
     lcd.printString("    BoxHead    ",0,1);  
-    lcd.printString("  Press For \nWeapon\n and Start ",0,3);
+    lcd.printString("  Choose your",0,3);
+    lcd.printString("     Weapon",0,4);
     lcd.refresh();
         while (1) {
         //pc.printf("While Loop + %d", g_pad.Button_A_flag);
@@ -88,8 +92,8 @@ void menu(){
                 p1.init(40,22); 
                 return;
             }
+        sleep();
         }
-    sleep();
 }
                                                                          
 void GameRun(){
@@ -100,11 +104,26 @@ void GameRun(){
         //movement code
         dir = pad.get_direction();
         mag = pad.get_mag();
+        
+        if (pad.A_pressed()) {
+                shot.init(p1.get_x()+2, p1.get_y()+2, 1);
+        }
+        else if (pad.B_pressed()) {
+                shot.init(p1.get_x()+2, p1.get_y()+2, 2);
+        }        
+        else if (pad.Y_pressed()) {
+                shot.init(p1.get_x()+2, p1.get_y()+2, 3);
+        }
+        else if (pad.X_pressed()) {
+                shot.init(p1.get_x()+2, p1.get_y()+2, 0);
+        }
         p1.update(dir, mag);
-        lcd.clear();  
+        shot.update(p1.get_x()+2, p1.get_y()+2);
+        lcd.clear(); 
         p1.draw(lcd);
+        shot.draw(lcd);
         lcd.refresh();
-        wait(1.0f/10.0);
+        wait(1.0f/10.0f);
         if (pad.start_pressed()) {
             Current_State = fsm[Current_State].next_state[0];
             return;
@@ -113,7 +132,7 @@ void GameRun(){
     }
 }
 void Pause(){
-        lcd.printString("     PAUSED     ",0,1);  
+        lcd.printString("    PAUSED     ",0,1);  
         lcd.refresh();  
                 // put the MCU to sleep until an interrupt wakes it up
         if (pad.start_pressed()) {
