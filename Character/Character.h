@@ -14,7 +14,9 @@ public:
     void update(Direction d,float mag);
     void level_up();
     int get_level();
-    Vector2D get_pos();
+    int get_direction();
+    int get_x();
+    int get_y();
 
 private:
 

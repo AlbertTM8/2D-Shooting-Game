@@ -30,28 +30,19 @@ void Character::draw(N5110 &lcd)
   0,1,1,1,1
   };
   //turning the sprite 
-     if (_dir == 0) {
-        for(int i = 0; i < 25; i++){
+    for(int i = 0; i < 25; i++){
             sprite_data[i] = 1;
             }
+     if (_dir == 0) {
         sprite_data[0] = 0;
         sprite_data[4] = 0;
     } else if (_dir == 1) {
-         for(int i = 0; i < 25; i++){
-            sprite_data[i] = 1;
-            }
         sprite_data[4] = 0;
         sprite_data[24] = 0;
     } else if (_dir == 2) {
-        for(int i = 0; i < 25; i++){
-            sprite_data[i] = 1;
-            }
         sprite_data[20] = 0;
         sprite_data[24] = 0;
     } else if (_dir == 3) {
-        for(int i = 0; i < 25; i++){
-            sprite_data[i] = 1;
-            }
         sprite_data[0] = 0;
         sprite_data[20] = 0;
     }
@@ -64,7 +55,7 @@ void Character::draw(N5110 &lcd)
 
 void Character::update(Direction d,float mag)
 {
-    _speed = int(mag*2.0f); //scale of speed
+    _speed = 1; //scale of speed
     
     //printf statements for speed
     //pcc.printf("speed = %d \n", _speed);
@@ -110,3 +101,16 @@ int Character::get_level()
 {   //Accessor function for level
     return _level;
 }
+int Character::get_x()
+{   
+    return _x;
+    
+}
+int Character::get_y()
+{   
+    return _y;
+    
+}
+int Character::get_direction(){
+    return _dir;
+    }
