@@ -31,17 +31,18 @@ void Bullets::init(int ex, int wy, int d)
 
 void Bullets::draw(N5110 &lcd)
 {   
+
     if(_dir == 0){
-    lcd.drawLine(_x,_y, _x, 0,2);
+    lcd.drawLine(_x,_y, _x, 0,1);
     }
     else if (_dir == 1){
-    lcd.drawLine(_x,_y, WIDTH, _y,2);
+    lcd.drawLine(_x,_y, WIDTH, _y,1);
     }
     else if (_dir == 2){
-    lcd.drawLine(_x,_y, _x, HEIGHT,2);
+    lcd.drawLine(_x,_y, _x, HEIGHT,1);
     }
     else if (_dir == 3){
-    lcd.drawLine(_x,_y, 0, _y,2);
+    lcd.drawLine(_x,_y, 0, _y,1);
     }
 }
 

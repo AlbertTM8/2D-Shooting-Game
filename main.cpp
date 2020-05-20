@@ -16,6 +16,7 @@ Date:10/4/2020
 #include "N5110.h"
 #include "Character.h"
 #include "Bullets.h"
+#include "Enemy.h"
 Serial pc(USBTX, USBRX);
 //STRUCTS
 struct State {
@@ -28,7 +29,7 @@ Gamepad pad;
 N5110 lcd;
 Character p1;
 Bullets shot;
-
+Enemy boi;
 //Variables
 State fsm[3] = {
         {0,{1,1}},
@@ -77,18 +78,21 @@ void menu(){
             if (pad.A_pressed()) {
                 //pc.printf("Button_A");
                 Current_State = fsm[0].next_state[0];
+                boi.init();
                 p1.init(40,22);     
                 return;
             }
             if (pad.X_pressed()) {
                 //pc.printf("Button_X");
                 Current_State = fsm[0].next_state[0];
+                boi.init();
                 p1.init(40,22); 
                 return;
             }
             if (pad.Y_pressed()) {
                 //pc.printf("Button_Y");
                 Current_State = fsm[0].next_state[0];
+                boi.init();
                 p1.init(40,22); 
                 return;
             }
@@ -117,9 +121,11 @@ void GameRun(){
         else if (pad.X_pressed()) {
                 shot.init(p1.get_x()+2, p1.get_y()+2, 0);
         }
+        boi.update(p1.get_x()+1, p1.get_y()+1);
         p1.update(dir, mag);
         shot.update(p1.get_x()+2, p1.get_y()+2);
         lcd.clear(); 
+        boi.draw(lcd);
         p1.draw(lcd);
         shot.draw(lcd);
         lcd.refresh();
