@@ -1,8 +1,22 @@
 #include "Bullets.h"
 Serial pcb(USBTX, USBRX);
-Bullets::Bullets()
+Bullets::Bullets(int ex, int wy, Direction d)
 {
-
+    _x = ex;
+    _y = wy;
+    if (d == N) {
+        _dir = 0;
+    } 
+    else if (d == E) {
+        _dir = 1;
+    }
+    else if (d == S) {
+        _dir = 2;
+    }
+    else if (d == W) {
+        _dir = 3;
+    }
+    //pcb.printf("Direction = %d", _dir);
 }
 
 Bullets::~Bullets()
@@ -10,44 +24,32 @@ Bullets::~Bullets()
 
 }
 
-void Bullets::init(int ex, int wy, int d)
-{
-    _size = 1;
-    _speed = 4;
-    _x = ex;
-    _y = wy;
-
-    if (d == 0) {
-        _dir = 0;
-    } else if (d == 1) {
-        _dir = 1;
-    } else if (d == 2) {
-        _dir = 2;
-    } else {
-        _dir = 3;
-    }
-    //pcb.printf("Direction = %d", _dir);
-}
-
 void Bullets::draw(N5110 &lcd)
 {   
 
-    if(_dir == 0){
-    lcd.drawLine(_x,_y, _x, 0,1);
-    }
-    else if (_dir == 1){
-    lcd.drawLine(_x,_y, WIDTH, _y,1);
-    }
-    else if (_dir == 2){
-    lcd.drawLine(_x,_y, _x, HEIGHT,1);
-    }
-    else if (_dir == 3){
-    lcd.drawLine(_x,_y, 0, _y,1);
-    }
+    lcd.drawRect(_x,_y,1,1,FILL_BLACK);
 }
 
-void Bullets::update(int ex, int wy)
+void Bullets::update()
 {
-    _x = ex;
-    _y = wy;
+    if(_dir == 0){
+    _y = _y-2;
+    }
+    else if (_dir == 1){
+    _x = _x+2;
+    }
+    else if (_dir == 2){
+    _y = _y+2;
+    }
+    else if (_dir == 3){
+    _x = _x-2;
+    }
 }
+int Bullets::get_x(){
+    return _x;
+    }
+    
+int Bullets::get_y(){
+    return _y;
+    }
+    
