@@ -33,16 +33,16 @@ void Bullets::draw(N5110 &lcd)
 void Bullets::update()
 {
     if(_dir == 0){
-    _y = _y-2;
+    _y = _y-3;
     }
     else if (_dir == 1){
-    _x = _x+2;
+    _x = _x+3;
     }
     else if (_dir == 2){
-    _y = _y+2;
+    _y = _y+3;
     }
     else if (_dir == 3){
-    _x = _x-2;
+    _x = _x-3;
     }
 }
 int Bullets::get_x(){

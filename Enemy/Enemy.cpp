@@ -6,9 +6,8 @@ Enemy::Enemy(int seed)
 {
 
     srand(seed);
-    int four;
     four = (rand()%4)+1;
-    pce.printf("%d",four);
+    //pce.printf("%d",four);
     if(four == 1){
         _x = 0;
         _y = rand()%48;
@@ -55,7 +54,7 @@ void Enemy::update(int player_x, int player_y)
         }
     else if (_y > player_y){
         _y--;
-        }     
+        }
 }
 int Enemy::get_x()
 {   
@@ -66,4 +65,28 @@ int Enemy::get_y()
 {   
     return _y;
     
+}
+void Enemy::dead(){
+       _x = 2147483647;
+}
+void Enemy::reset(int seed){
+    srand(seed);
+    four = (rand()%4)+1;
+    //pce.printf("%d",four);
+    if(four == 1){
+        _x = 0;
+        _y = rand()%48;
+        }
+    else if(four == 2){
+        _x = 84;
+        _y = rand()%48;
+        }
+    else if(four == 3){
+        _y = 0;
+        _x = rand()%84;
+        }
+    else if(four == 4){
+        _y = 48;
+        _x = rand()%84;
+        } 
 }
