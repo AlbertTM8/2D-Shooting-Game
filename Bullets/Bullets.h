@@ -14,21 +14,17 @@ class Bullets
 {
 
 public:
-    Bullets();
+    Bullets(int ex, int wy, Direction d);
     ~Bullets();
-    void init(int ex, int wy, int d);
     void draw(N5110 &lcd);
-    void update(int ex, int wy);
-    /// accessors and mutators
-    Vector2D get_pos();
-    void set_pos(Vector2D p);
+    void update();
+    int get_y();
+    int get_x();
     
 private:
 
     int _x;
     int _y;
-    int _size;
     int _dir;
-    int _speed;
 };
 #endif

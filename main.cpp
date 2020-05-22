@@ -29,7 +29,7 @@ int next_state[2];
 Gamepad pad;
 N5110 lcd;
 Character p1;
-Bullets shot;
+vector<Bullets> shots;
 volatile int enemy_number = 1;
 vector<Enemy> enemies;
 //Variables
@@ -114,22 +114,29 @@ void GameRun(){
         mag = pad.get_mag();
         
         if (pad.A_pressed()) {
-            shot.init(p1.get_x()+2, p1.get_y()+2, 1);
+            shots.push_back(Bullets(p1.get_x()+2, p1.get_y()+2, dir));
         }
         if (enemies.size()== 0) {
             LevelUp();
         }
         p1.update(dir, mag);
-        shot.update(p1.get_x()+2, p1.get_y()+2);
         for(int i = 0; i<enemies.size(); i++){
             enemies.at(i).update(p1.get_x()+2, p1.get_y()+2);
+            }
+        for(int i = 0; i<shots.size(); i++){
+            if(shots.at(i).get_x()>84||shots.at(i).get_x()<0||shots.at(i).get_y()>48||shots.at(i).get_x()<0){
+                shots.erase(shots.begin()+i);
+                }
+            shots.at(i).update();
             }
         lcd.clear(); 
         for(int i = 0; i<enemies.size(); i++){
             enemies.at(i).draw(lcd);
             }
+        for(int i = 0; i<shots.size(); i++){
+            shots.at(i).draw(lcd);
+            }
         p1.draw(lcd);
-        shot.draw(lcd);
         lcd.refresh();
         wait(1.0f/10.0f);
         if (pad.start_pressed()) {
