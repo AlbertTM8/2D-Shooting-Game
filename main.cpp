@@ -17,6 +17,7 @@ Date:10/4/2020
 #include "Character.h"
 #include "Bullets.h"
 #include "Enemy.h"
+#include <vector>
 Serial pc(USBTX, USBRX);
 //STRUCTS
 struct State {
@@ -29,7 +30,8 @@ Gamepad pad;
 N5110 lcd;
 Character p1;
 Bullets shot;
-Enemy boi;
+volatile int enemy_number = 1;
+vector<Enemy> enemies;
 //Variables
 State fsm[3] = {
         {0,{1,1}},
@@ -37,6 +39,7 @@ State fsm[3] = {
         {2,{1,0}}
         };
 volatile int Current_State = 0;
+volatile int timer = 0;
 //PROTOTYPES
 void menu();
 void GameRun();
@@ -78,21 +81,21 @@ void menu(){
             if (pad.A_pressed()) {
                 //pc.printf("Button_A");
                 Current_State = fsm[0].next_state[0];
-                boi.init();
+                enemies.push_back(Enemy(timer));
                 p1.init(40,22);     
                 return;
             }
             if (pad.X_pressed()) {
                 //pc.printf("Button_X");
                 Current_State = fsm[0].next_state[0];
-                boi.init();
+                enemies.push_back(Enemy(timer));
                 p1.init(40,22); 
                 return;
             }
             if (pad.Y_pressed()) {
                 //pc.printf("Button_Y");
                 Current_State = fsm[0].next_state[0];
-                boi.init();
+                enemies.push_back(Enemy(timer));
                 p1.init(40,22); 
                 return;
             }
@@ -105,27 +108,26 @@ void GameRun(){
     Direction dir = pad.get_direction();
     float mag = pad.get_mag();
     while(1){
+        timer++;
         //movement code
         dir = pad.get_direction();
         mag = pad.get_mag();
         
         if (pad.A_pressed()) {
-                shot.init(p1.get_x()+2, p1.get_y()+2, 1);
+            shot.init(p1.get_x()+2, p1.get_y()+2, 1);
         }
-        else if (pad.B_pressed()) {
-                shot.init(p1.get_x()+2, p1.get_y()+2, 2);
-        }        
-        else if (pad.Y_pressed()) {
-                shot.init(p1.get_x()+2, p1.get_y()+2, 3);
+        if (enemies.size()== 0) {
+            LevelUp();
         }
-        else if (pad.X_pressed()) {
-                shot.init(p1.get_x()+2, p1.get_y()+2, 0);
-        }
-        boi.update(p1.get_x()+1, p1.get_y()+1);
         p1.update(dir, mag);
         shot.update(p1.get_x()+2, p1.get_y()+2);
+        for(int i = 0; i<enemies.size(); i++){
+            enemies.at(i).update(p1.get_x()+2, p1.get_y()+2);
+            }
         lcd.clear(); 
-        boi.draw(lcd);
+        for(int i = 0; i<enemies.size(); i++){
+            enemies.at(i).draw(lcd);
+            }
         p1.draw(lcd);
         shot.draw(lcd);
         lcd.refresh();
@@ -156,10 +158,14 @@ void Pause(){
     }
 void LevelUp(){
     
-    lcd.printString("     NEXT LEVEL    ",0,1);  
+    lcd.printString("NEXT LEVEL    ",0,1);  
+    lcd.refresh();  
     wait(2.0);
-    lcd.refresh();
+    enemy_number *= 2;
+    for(int i = 0; i < enemy_number; i++){
+         enemies.push_back(Enemy(timer));
+        }
     p1.level_up();
-    Current_State = fsm[Current_State].next_state[0];
+    Current_State = 1;
     return;
     }

@@ -62,7 +62,8 @@ private:
     mbed::PwmOut *_led4;
     mbed::PwmOut *_led5;
     mbed::PwmOut *_led6;
-
+    
+    
     mbed::InterruptIn *_button_A;
     mbed::InterruptIn *_button_B;
     mbed::InterruptIn *_button_X;
@@ -249,8 +250,6 @@ public:
     *@param voltage in range 0.0 to 1.0 (corresponds 0.0 to 3.3 V)
     */
     void write_dac(float val);
-
-
 
 
 private:

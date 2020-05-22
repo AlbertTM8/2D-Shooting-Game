@@ -6,8 +6,7 @@
 class Enemy
 {
 public:
-
-    Enemy();
+    Enemy(int seed);
     ~Enemy();
     void init();
     void draw(N5110 &lcd);
@@ -16,7 +15,6 @@ public:
     int get_y();
 
 private:
-
     int _x;
     int _y;
     int _speed;
