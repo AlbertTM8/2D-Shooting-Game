@@ -85,7 +85,7 @@ void menu(){
                 p1.init(40,22);     
                 return;
             }
-            if (pad.X_pressed()) {
+ /*           if (pad.X_pressed()) {
                 //pc.printf("Button_X");
                 Current_State = fsm[0].next_state[0];
                 enemies.push_back(Enemy(timer));
@@ -98,7 +98,7 @@ void menu(){
                 enemies.push_back(Enemy(timer));
                 p1.init(40,22); 
                 return;
-            }
+            }*/
         sleep();
         }
 }
@@ -120,14 +120,22 @@ void GameRun(){
             LevelUp();
         }
         p1.update(dir, mag);
-        for(int i = 0; i<enemies.size(); i++){
-            enemies.at(i).update(p1.get_x()+2, p1.get_y()+2);
-            }
         for(int i = 0; i<shots.size(); i++){
-            if(shots.at(i).get_x()>84||shots.at(i).get_x()<0||shots.at(i).get_y()>48||shots.at(i).get_x()<0){
+            shots.at(i).update();
+            }
+        for(int i = 1; i<shots.size(); i++){
+            if(shots.at(i).get_x()>84|shots.at(i).get_x()<1|shots.at(i).get_y()>48|shots.at(i).get_y()<1){
                 shots.erase(shots.begin()+i);
                 }
-            shots.at(i).update();
+            }
+        for(int i = 0; i<enemies.size(); i++){
+            enemies.at(i).update(p1.get_x()+1, p1.get_y()+1);
+            for(int j = 1; j<shots.size(); j++){
+               if(shots.at(j).get_x() >= enemies.at(i).get_x()-1 & shots.at(j).get_x()<= enemies.at(i).get_x()+1& shots.at(j).get_y() >= enemies.at(i).get_y()-1 & shots.at(j).get_y()<= enemies.at(i).get_y()+1){
+                    enemies.at(i).dead();
+                    shots.erase(shots.begin()+i);
+                    }   
+                }
             }
         lcd.clear(); 
         for(int i = 0; i<enemies.size(); i++){
