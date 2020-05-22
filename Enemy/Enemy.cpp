@@ -1,9 +1,30 @@
 #include "Enemy.h"
 #include <Bitmap.h>
+Serial pce(USBTX, USBRX);
 // nothing doing in the constructor and destructor
-Enemy::Enemy()
+Enemy::Enemy(int seed)
 {
 
+    srand(seed);
+    int four;
+    four = (rand()%4)+1;
+    pce.printf("%d",four);
+    if(four == 1){
+        _x = 0;
+        _y = rand()%48;
+        }
+    else if(four == 2){
+        _x = 84;
+        _y = rand()%48;
+        }
+    else if(four == 3){
+        _y = 0;
+        _x = rand()%84;
+        }
+    else if(four == 4){
+        _y = 48;
+        _x = rand()%84;
+        }
 }
 
 Enemy::~Enemy()
@@ -13,8 +34,6 @@ Enemy::~Enemy()
 
 void Enemy::init()
 {
-    _x = 84;
-    _y = 48;
 }
 
 void Enemy::draw(N5110 &lcd)

@@ -6,7 +6,6 @@
 class Character
 {
 public:
-
     Character();
     ~Character();
     void init(int x,int y);
