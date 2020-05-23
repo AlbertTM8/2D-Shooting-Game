@@ -11,8 +11,6 @@ public:
     void init(int x,int y);
     void draw(N5110 &lcd);
     void update(Direction d,float mag);
-    void level_up();
-    int get_level();
     int get_direction();
     int get_x();
     int get_y();

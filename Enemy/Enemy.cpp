@@ -4,7 +4,7 @@ Serial pce(USBTX, USBRX);
 // nothing doing in the constructor and destructor
 Enemy::Enemy(int seed)
 {
-
+    _dead = false;
     srand(seed);
     four = (rand()%4)+1;
     //pce.printf("%d",four);
@@ -42,6 +42,7 @@ void Enemy::draw(N5110 &lcd)
 
 void Enemy::update(int player_x, int player_y)
 {
+    if(_dead == false){
     if(_x<player_x){
         _x++;
         }
@@ -55,6 +56,7 @@ void Enemy::update(int player_x, int player_y)
     else if (_y > player_y){
         _y--;
         }
+    }
 }
 int Enemy::get_x()
 {   
@@ -67,9 +69,11 @@ int Enemy::get_y()
     
 }
 void Enemy::dead(){
+       _dead  = true;
        _x = 2147483647;
 }
 void Enemy::reset(int seed){
+    _dead = false;
     srand(seed);
     four = (rand()%4)+1;
     //pce.printf("%d",four);

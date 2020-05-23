@@ -93,14 +93,6 @@ void Character::update(Direction d,float mag)
         _y = 43;
     }
     }
-void Character::level_up()
-{   //Mutator function for leveling up
-    _level++;
-}
-int Character::get_level()
-{   //Accessor function for level
-    return _level;
-}
 int Character::get_x()
 {   
     return _x;
