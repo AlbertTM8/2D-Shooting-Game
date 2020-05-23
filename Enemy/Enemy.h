@@ -16,6 +16,7 @@ public:
     void reset(int seed);
     void dead();
 private:
+    bool _dead;
     int _x;
     int _y;
     int _speed;

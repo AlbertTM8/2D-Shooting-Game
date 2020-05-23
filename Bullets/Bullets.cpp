@@ -2,6 +2,7 @@
 Serial pcb(USBTX, USBRX);
 Bullets::Bullets(int ex, int wy, Direction d)
 {
+    _dir = 0;
     _x = ex;
     _y = wy;
     if (d == N) {
@@ -52,4 +53,9 @@ int Bullets::get_x(){
 int Bullets::get_y(){
     return _y;
     }
+    
+void Bullets::dead(){
+       _x = 2147483647;
+       _y = 1000;
+}
     

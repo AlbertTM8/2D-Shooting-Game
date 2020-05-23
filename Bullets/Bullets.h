@@ -20,9 +20,8 @@ public:
     void update();
     int get_y();
     int get_x();
-    
+    void dead();
 private:
-
     int _x;
     int _y;
     int _dir;
