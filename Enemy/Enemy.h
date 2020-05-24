@@ -14,9 +14,7 @@ public:
     int get_x();
     int get_y();
     void reset(int seed);
-    void dead();
 private:
-    bool _dead;
     int _x;
     int _y;
     int _speed;

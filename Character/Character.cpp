@@ -17,7 +17,6 @@ void Character::init(int x,int y)
     _x = x;  // initial x
     _y = y;  // initial y
     _speed = 1;  // default speed
-    _level = 0;  // start score from zero
 }
 
 void Character::draw(N5110 &lcd)
@@ -105,4 +104,10 @@ int Character::get_y()
 }
 int Character::get_direction(){
     return _dir;
+    }
+void Character::reset(){
+    _x = 40;
+    _y = 22;
+    _dir = 0;
+    
     }
