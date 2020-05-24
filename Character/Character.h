@@ -11,6 +11,7 @@ public:
     void init(int x,int y);
     void draw(N5110 &lcd);
     void update(Direction d,float mag);
+    void reset();
     int get_direction();
     int get_x();
     int get_y();
@@ -20,6 +21,5 @@ private:
     int _x;
     int _y;
     int _speed;
-    int _level;
     int _dir;
 };
