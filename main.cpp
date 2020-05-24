@@ -232,3 +232,14 @@ void animation(){
     
     return;
     }
+void reset(){
+    score = 0;
+    while(enemies.size()>=1){
+        enemies.pop_back();
+    }
+    while(shots.size()>=1){
+        shots.pop_back();
+    }
+    p1.reset();
+    return;
+    }
