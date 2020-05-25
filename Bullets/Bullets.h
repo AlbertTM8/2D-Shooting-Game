@@ -14,7 +14,7 @@ class Bullets
 {
 
 public:
-    Bullets(int ex, int wy, Direction d);
+    Bullets(int ex, int wy, int d);
     ~Bullets();
     void draw(N5110 &lcd);
     void update();

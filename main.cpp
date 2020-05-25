@@ -31,7 +31,6 @@ N5110 lcd;
 Character p1;
 vector<Bullets> shots;
 vector<Enemy> enemies;
-Direction holder;
 int melody[46] = {277, 330, 311, 277, 330, 311, 330, 311, 370, 330, 415, 330, 277, 330, 311, 277, 330, 311, 330, 311, 370, 330, 311, 247, 277, 330, 311, 277, 330, 311, 330, 311, 370, 330, 415, 440, 330, 415, 440, 494, 554, 415, 440, 494, 622, 659}; // #c = 277, d# =311, f# = 370, g# = 415
 int durations[46] = {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4};
 //Variables
@@ -44,6 +43,7 @@ State fsm[4] = {
 volatile int Current_State = 0;
 volatile int timer = 0;
 volatile int score = 0;
+volatile int holder;
 //PROTOTYPES
 void menu();
 void GameRun();
@@ -52,23 +52,23 @@ void AddEnemy();
 void PlayerDead();
 void animation();
 void reset();
+void collisions();
+void draws();
+void updates(Direction dir);
 //FUNCTIONS
 int main()
-    {    
-    //pc.printf("Main Open");
+    {//pc.printf("Main Open");
      //SETUPS
     pad.init();
     lcd.init();
     lcd.setContrast(0.4+(pad.read_pot1()/2.0));
     lcd.clear();
-    lcd.refresh();
-    //testing CoolTerm
     //pc.printf("CoolTerm is Connected\n");
     //pc.printf("CurrentState = %d\n", Current_State);
-    
     while(1){
     if(Current_State == 0){
         menu();
+        reset();
         }
     else if (Current_State == 1){
         GameRun();
@@ -89,7 +89,7 @@ void menu(){
     lcd.printString("  Press A to  ",0,3); 
     lcd.printString("Start",27,4); 
     lcd.refresh();
-        while (1) {
+    while (1) {
         //pc.printf("While Loop + %d", g_pad.Button_A_flag);
             if (pad.A_pressed()) {
                 //pc.printf("Button_A");
@@ -110,66 +110,21 @@ void GameRun(){
     pad.play_melody(46, melody,durations,180.0,true);
     while(1){
         timer++;
-        if(timer%100==0){
-                AddEnemy();
-        }
-        //movement code
+        if(timer%100==0){ AddEnemy(); }
         dir = pad.get_direction();
-        mag = pad.get_mag();
-        if(dir == N){
-            holder = dir;
-            }
-        else if(dir == S){
-            holder = dir;
-            }
-        else if(dir == E){
-            holder = dir;
-            }
-        else if(dir == W){
-            holder = dir;
-            }        
+        if(dir == N){ holder = 0; }
+        else if(dir == S){ holder = 2; }
+        else if(dir == E){ holder = 1; }
+        else if(dir == W){ holder = 3; }      
         if (pad.A_pressed()) {
-            shots.push_back(Bullets(p1.get_x()+2, p1.get_y()+2, holder));
-        }
-        p1.update(dir, mag);
-        for(int i = 0; i<shots.size(); i++){
-            shots.at(i).update();
-            }
-        for(int i = 1; i<shots.size(); i++){
-            if(shots.at(i).get_x()>84|shots.at(i).get_x()<1|shots.at(i).get_y()>48|shots.at(i).get_y()<1){
-                shots.erase(shots.begin()+i);
-                }
-            }
-        for(int i = 0; i<enemies.size(); i++){
-            enemies.at(i).update(p1.get_x()+1, p1.get_y()+1);
-            if(enemies.at(i).get_x()>= p1.get_x()-1 & enemies.at(i).get_x()<= p1.get_x()+3&enemies.at(i).get_y()>= p1.get_y()-1 & enemies.at(i).get_y()<= p1.get_y()+3){
-                Current_State = fsm[Current_State].next_state[1];
-                return;
-                }
-            for(int j = 0; j<shots.size(); j++){
-               if(shots.at(j).get_x() >= enemies.at(i).get_x() & shots.at(j).get_x()<= enemies.at(i).get_x()+3 & shots.at(j).get_y() >= enemies.at(i).get_y() & shots.at(j).get_y()<= enemies.at(i).get_y()+3){
-                    shots.at(j).dead();
-                    enemies.at(i).reset(timer);
-                    score++;
-                    }   
-                }
-            }
-        
-        lcd.clear(); 
-        for(int i = 0; i<enemies.size(); i++){
-            enemies.at(i).draw(lcd);
-            }
-        for(int i = 0; i<shots.size(); i++){
-            shots.at(i).draw(lcd);
-            }
-        p1.draw(lcd);
-        lcd.refresh();
+            shots.push_back(Bullets(p1.get_x()+2, p1.get_y()+2, holder)); }
+        updates(dir);
+        draws();
+        collisions();
         wait(1.0f/10.0f);
         if (pad.start_pressed()) {
-            Current_State = fsm[Current_State].next_state[0];
-            return;
-
-        }
+            Current_State = fsm[Current_State].next_state[0];}
+        if(Current_State!= 1){ return; }
     }
 }
 void Pause(){
@@ -243,3 +198,41 @@ void reset(){
     p1.reset();
     return;
     }
+void collisions(){
+    for(int i = 1; i<shots.size(); i++){
+            if(shots.at(i).get_x()>84|shots.at(i).get_x()<1|shots.at(i).get_y()>48|shots.at(i).get_y()<1){
+                shots.erase(shots.begin()+i);
+                }
+            }
+        for(int i = 0; i<enemies.size(); i++){
+            enemies.at(i).update(p1.get_x()+1, p1.get_y()+1);
+            if(enemies.at(i).get_x()>= p1.get_x()-1 & enemies.at(i).get_x()<= p1.get_x()+3&enemies.at(i).get_y()>= p1.get_y()-1 & enemies.at(i).get_y()<= p1.get_y()+3){
+                Current_State = fsm[Current_State].next_state[1];
+                return;
+                }
+            for(int j = 0; j<shots.size(); j++){
+               if(shots.at(j).get_x() >= enemies.at(i).get_x() & shots.at(j).get_x()<= enemies.at(i).get_x()+3 & shots.at(j).get_y() >= enemies.at(i).get_y() & shots.at(j).get_y()<= enemies.at(i).get_y()+3){
+                    shots.at(j).dead();
+                    enemies.at(i).reset(timer);
+                    score++;
+                    }   
+                }
+            }
+    }
+void draws(){
+        lcd.clear(); 
+        for(int i = 0; i<enemies.size(); i++){
+            enemies.at(i).draw(lcd);
+            }
+        for(int i = 0; i<shots.size(); i++){
+            shots.at(i).draw(lcd);
+            }
+        p1.draw(lcd);
+        lcd.refresh();
+    }
+void updates(Direction dir){
+    p1.update(dir);
+    for(int i = 0; i<shots.size(); i++){
+        shots.at(i).update();
+    }
+}

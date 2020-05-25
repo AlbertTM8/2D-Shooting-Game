@@ -1,22 +1,11 @@
 #include "Bullets.h"
 Serial pcb(USBTX, USBRX);
-Bullets::Bullets(int ex, int wy, Direction d)
+Bullets::Bullets(int ex, int wy, int d)
 {
     _dir = 0;
     _x = ex;
     _y = wy;
-    if (d == N) {
-        _dir = 0;
-    } 
-    else if (d == E) {
-        _dir = 1;
-    }
-    else if (d == S) {
-        _dir = 2;
-    }
-    else if (d == W) {
-        _dir = 3;
-    }
+    _dir = d;
     //pcb.printf("Direction = %d", _dir);
 }
 
