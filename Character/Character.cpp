@@ -52,13 +52,11 @@ void Character::draw(N5110 &lcd)
  sprite.render(lcd, _x, _y);
 }
 
-void Character::update(Direction d,float mag)
+void Character::update(Direction d)
 {
     _speed = 1; //scale of speed
-    
     //printf statements for speed
     //pcc.printf("speed = %d \n", _speed);
-    
     // update x and y value depending on direction of movement
     // Set direction and speed according to north south directions
     if (d == N) {
@@ -77,20 +75,10 @@ void Character::update(Direction d,float mag)
     //testing _x and _y
     //pcc.printf("x = %d \n", _x);
     //pcc.printf("y = %d \n", _y);
-    
-    // check the x and y position] to ensure that the paddle doesn't go off screen
-    if (_x < 1) {
-        _x = 1;
-    }
-    if (_y < 1) {
-        _y = 1;
-    }
-    if (_x > 79){
-        _x = 79;
-    }
-    if (_y > 43){
-        _y = 43;
-    }
+    if (_x < 1) { _x = 1; }// check the x and y position] to ensure that the paddle doesn't go off screen
+    if (_y < 1) { _y = 1; }
+    if (_x > 79){ _x = 79; }
+    if (_y > 43){ _y = 43; }
     }
 int Character::get_x()
 {   
