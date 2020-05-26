@@ -2,7 +2,7 @@
 #include "N5110.h"
 #include "Gamepad.h"
 /** Character Class
-@brief  - Controls the Character in a shooter game 
+@brief  - Controls the Character in a 2D shooter game 
 
 @author Albert Tan Muligan, Student at University of Leeds
 @date May 2020
