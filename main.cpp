@@ -20,6 +20,8 @@ Date:10/4/2020
 #include "Bitmaps.h"
 #include <vector>
 #include <Bitmap.h>
+
+//my computer had issues with CoolTerm but setting up serial communication fixed it
 Serial pc(USBTX, USBRX);
 //STRUCTS
 struct State {
@@ -112,11 +114,11 @@ void menu()
 //Runs actual game code
 void GameRun()
 {
-    //pc.printf("Game Open");
+    //pc.printf("Game Open/n");
     Direction dir = pad.get_direction();
     pad.play_melody(46, melody,durations,180.0,true);
     while(1) {  //main game run loop
-        
+        //pc.printf("Direction = %d/n", dir);
         timer++;    //Timer to seed random functions/spawn enemies intermittently
         if(timer % 100 == 0) {
             AddEnemy();
@@ -144,6 +146,7 @@ void GameRun()
         collisions();
 
         if (pad.start_held()) {
+            //pc.printf("Start Held/n");
             Current_State = fsm[Current_State].next_state[0];   //Brings up pause menu if you press start
             return;
         }
@@ -158,11 +161,13 @@ void GameRun()
 
 void Pause()    //Creates the Pause menu
 {
+    //pc.printf("Pause Menu/n");
     lcd.printString("    PAUSED",0,1);
     lcd.refresh();
     lcd.printString("  Press B to",0,4);
     lcd.printString("Unpause",21,5);
     if (pad.B_held()) {             //B goes back to main game run code
+        //pc.printf("B Held/n");
         Current_State = fsm[Current_State].next_state[0];
         lcd.clear();
         return;
@@ -172,12 +177,14 @@ void Pause()    //Creates the Pause menu
 
 void AddEnemy()     //Add enemies
 {
+    //pc.printf("Add Enemy/n");
     enemies.push_back(Enemy(timer));    //adds an enemy to the vector of enemy class
     return;
 }
 
 void PlayerDead() //Called When Player Dies, B returns the game to menu
 {   
+    //pc.printf("Player Dead/n");
     pad.play_melody(6, dead_music, dead_duration,90.0,false);
     DeathAnimation();
     lcd.inverseMode();
@@ -226,6 +233,7 @@ void animation()    //Small animation for transition between main menus
 
 void reset() //Resets the game variables when you die
 {
+    //pc.printf("Game Reset/n");
     score = 0;
     while(enemies.size() >= 1) {
         enemies.pop_back();
@@ -242,7 +250,7 @@ void reset() //Resets the game variables when you die
 
 void collisions() //all the collisions
 {
-
+    //pc.printf("Collisions/n");
     for(int i = 1; i < shots.size(); i++) { //Checking all shots to make sure they are erased if they leave the screen
         if(shots.at(i).get_x()>84 | shots.at(i).get_x()<1 | shots.at(i).get_y()>48 | shots.at(i).get_y()<1) {
             shots.erase(shots.begin()+i);
@@ -270,6 +278,7 @@ void collisions() //all the collisions
 
 void draws()    //All the draw functions w/ clear and refresh
 {
+    //pc.printf("Draw Functions/n");
     lcd.clear();
     for(int i = 0; i < enemies.size(); i++) {
         enemies.at(i).draw(lcd);
@@ -283,6 +292,7 @@ void draws()    //All the draw functions w/ clear and refresh
 
 void updates(Direction dir)     //Updates objects after every frame(enemy update is in collisions)
 {
+    //pc.printf("Update Functions/n");
     p1.update(dir);
     for(int i = 0; i < shots.size(); i++) {
         shots.at(i).update();

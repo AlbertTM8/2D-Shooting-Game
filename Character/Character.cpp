@@ -1,5 +1,6 @@
 #include "Character.h"
 #include <Bitmap.h>
+
 Serial pcc(USBTX, USBRX);
 // Contrcutor and Deconstructor are empty
 Character::Character()
