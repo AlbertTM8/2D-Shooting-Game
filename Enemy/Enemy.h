@@ -14,7 +14,7 @@ public:
     int get_y();
     void reset(int seed, N5110 &lcd);
 private:
-    void DeathAnimation(N5110 &lcd);
+    void death_animation(N5110 &lcd);
     int _x;
     int _y;
     int _speed;
