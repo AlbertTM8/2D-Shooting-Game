@@ -164,6 +164,7 @@ void PlayerDead(){
     lcd.clear();
     lcd.printString("YOU DIED",18,1);  
     char buffer[14];
+    //score displays differently if below 10 to make sure the text is centered
     if(score>10){
     sprintf(buffer, "   Score:%d", score);
     lcd.printString(buffer,0,2); 
@@ -185,12 +186,14 @@ void PlayerDead(){
     }
 //Small animation for transition between main menus
 void animation(){
+    
     for(int i = 1; i<=42; i++){
     lcd.drawRect(0, 0, i, 48, FILL_BLACK);
     lcd.drawRect(84-i, 0, i, 48, FILL_BLACK);
     lcd.refresh();
     wait(0.005);
     }
+    
     for(int i = 1; i<=42; i++){
         lcd.drawRect(0, 0, i, 48, FILL_WHITE);
         lcd.drawRect(84-i, 0, i, 48, FILL_WHITE);
@@ -206,35 +209,42 @@ void reset(){
     while(enemies.size() >= 1){
         enemies.pop_back();
     }
+    
     while(shots.size() >= 1){
         shots.pop_back();
     }
+    
     p1.reset();
     holder = 0;
     return;
     }
 //all the collisions and 
 void collisions(){
+    
     //Checking all shots to make sure they are erased if they leave the screen 
     for(int i = 1; i < shots.size(); i++){
             if(shots.at(i).get_x()>84 | shots.at(i).get_x()<1 | shots.at(i).get_y()>48 | shots.at(i).get_y()<1){
                 shots.erase(shots.begin()+i);
                 }
             }
+            
     //Checking all enemy-player collisions and enemy-bullet collisions
     for(int i = 0; i < enemies.size(); i++){
+        
         //update enemies to save processing time of having another large for loop in updates function
         enemies.at(i).update(p1.get_x()+1, p1.get_y()+1);
+        
         //enemy player collisions
         if(enemies.at(i).get_x()>= p1.get_x()-1 & enemies.at(i).get_x()<= p1.get_x()+3 & enemies.at(i).get_y()>= p1.get_y()-1 & enemies.at(i).get_y()<= p1.get_y()+3){
             Current_State = fsm[Current_State].next_state[1];
             return;
             }
+            
         //enemy bullet collisions
         for(int j = 0; j < shots.size(); j++){
             if(shots.at(j).get_x() >= enemies.at(i).get_x() & shots.at(j).get_x()<= enemies.at(i).get_x()+3 & shots.at(j).get_y() >= enemies.at(i).get_y() & shots.at(j).get_y()<= enemies.at(i).get_y()+3){
                 shots.at(j).dead();
-                enemies.at(i).reset(timer);
+                enemies.at(i).reset(timer, lcd);
                 score++;
                 }   
             }

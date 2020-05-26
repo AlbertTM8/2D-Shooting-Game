@@ -79,7 +79,7 @@ void Character::update(Direction d)
     if (_x > 79){ _x = 79; }
     if (_y > 43){ _y = 43; }
     }
-//Accessor and Mutator Functions
+//Accessor Functions
 int Character::get_x()
 {   
     return _x;
@@ -98,5 +98,4 @@ void Character::reset(){
     _x = 40;
     _y = 22;
     _dir = 0;
-    
     }
