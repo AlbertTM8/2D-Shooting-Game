@@ -1,4 +1,4 @@
-/** Bullets Class
+/** Bullets Class:
 @brief  - Defines instances of bullets for a 2D shooter game
 
 @author Albert Tan Muligan, Student at University of Leeds

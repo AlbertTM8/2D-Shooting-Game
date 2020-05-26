@@ -2,7 +2,7 @@
 #include "N5110.h"
 #include "Gamepad.h"
 
-/** Enemy Class
+/** Enemy Class:
 @brief  - Defines instances of Enemies for a 2D shooter game
 
 @author Albert Tan Muligan, Student at University of Leeds
