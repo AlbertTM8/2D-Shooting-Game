@@ -5,11 +5,6 @@
 #include "N5110.h"
 #include "Gamepad.h"
 
-/** Ball Class
-@author Dr Craig A. Evans, University of Leeds
-@brief Controls the ball in the Pong game 
-@date Febraury 2017
-*/ 
 class Bullets
 {
 
