@@ -1,10 +1,14 @@
-#ifndef BALL_H
-#define BALL_H
+/** Bullets Class
+@author Albert Tan Muligan, Student at University of Leeds
+@brief Controls the Character in a shooter game 
+@date May 2020
+
+
+*/ 
 
 #include "mbed.h"
 #include "N5110.h"
 #include "Gamepad.h"
-
 class Bullets
 {
 

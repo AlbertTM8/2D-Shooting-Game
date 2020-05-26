@@ -2,8 +2,8 @@
 #include "N5110.h"
 #include "Gamepad.h"
 /** Character Class
-@author Albert Tan Muligan, Student at University of Leeds
-@brief Controls the Character in a shooter game 
+ Albert Tan Muligan, Student at University of Leeds
+\brief Controls the Character in a shooter game 
 @date May 2020
 
 
