@@ -26,7 +26,7 @@ public:
     int get_y();
     ///X value accessor
     int get_x();
-    ///"Dead" function puts the x and y at 1000 so it's off-screen.
+    ///"Dead" mutator puts the x and y at 1000 so it's off-screen.
     void dead();
 private:
     int _x;

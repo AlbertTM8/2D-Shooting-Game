@@ -15,7 +15,7 @@ class Enemy
 {
 public:
     /** 
-  * @brief Constructor that sets inital x and y with random seet
+  * @brief Constructor that sets inital x and y with random seed
   * @param x and y  @details x and y in pixels (places enemy somewhere on the edge of a 84x48 board)
   */
     Enemy(int seed);
@@ -27,7 +27,7 @@ public:
     ///Y value accessor
     int get_y();
      /** 
-  * @brief Reset enemy to edge with random seed, and creates an animation on death
+  * @brief Mutator to reset enemy to edge with random seed, and creates an animation on death
   * @param seed, lcd  @details integer seed and pointer to lcd
   */
     void reset(int seed, N5110 &lcd);
