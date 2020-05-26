@@ -1,7 +1,7 @@
 #include "mbed.h"
 #include "N5110.h"
 #include "Gamepad.h"
-/** Character Class
+/** Character Class:
 @brief  - Controls the Character in a 2D shooter game 
 
 @author Albert Tan Muligan, Student at University of Leeds
