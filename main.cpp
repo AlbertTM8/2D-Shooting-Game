@@ -90,8 +90,8 @@ void menu()
 {
     //pc.printf("Menu Open");
     lcd.clear();
-    lcd.printString("BoxHead",21,1);
-    lcd.drawLine(20, 16, 62, 16, 1);
+    Bitmap sprite(Title, 17, 60);
+        sprite.render(lcd, 10, 6);
     lcd.printString("  Press A to  ",0,3);
     lcd.printString("Start",27,4);
     lcd.refresh();
