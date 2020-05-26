@@ -65,7 +65,7 @@ int Enemy::get_y()
 }
 //resets enemies each time it gets shot
 void Enemy::reset(int seed, N5110 &lcd){
-    DeathAnimation(lcd);
+    death_animation(lcd);
     srand(seed);
     _four = (rand()%4)+1;
     //pce.printf("%d", _four);
@@ -87,7 +87,7 @@ void Enemy::reset(int seed, N5110 &lcd){
         } 
 }
 //Eenmy Death Animation
-void Enemy::DeathAnimation(N5110 &lcd){
+void Enemy::death_animation(N5110 &lcd){
     int sprite_data[] = {
     1,0,1,0,1,
     0,1,1,1,0,
@@ -95,12 +95,8 @@ void Enemy::DeathAnimation(N5110 &lcd){
     0,1,1,1,0,
     1,0,1,0,1
     };
-    
-    
     Bitmap death(sprite_data, 5, 5);
-
     //Render Bitmap at x & y
     death.render(lcd, _x - 1, _y - 1);
     lcd.refresh();
-    wait(0.01);
     }
