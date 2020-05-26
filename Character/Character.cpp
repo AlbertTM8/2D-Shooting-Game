@@ -1,7 +1,7 @@
 #include "Character.h"
 #include <Bitmap.h>
 Serial pcc(USBTX, USBRX);
-// nothing doing in the constructor and destructor
+// Contrcutor and Deconstructor are empty
 Character::Character()
 {
 
@@ -11,14 +11,14 @@ Character::~Character()
 {
 
 }
-
+//Initlializer that sets x and y coordinates
 void Character::init(int x,int y)
 {
     _x = x;  // initial x
     _y = y;  // initial y
     _speed = 1;  // default speed
 }
-
+//draws and renders sprite, accounting for direction
 void Character::draw(N5110 &lcd)
 { //sprite is facing left
   static int sprite_data[] = {
@@ -45,17 +45,16 @@ void Character::draw(N5110 &lcd)
         sprite_data[0] = 0;
         sprite_data[20] = 0;
     }
- // Instantiate the Bitmap
+ //Intantiate Bitmap
  Bitmap sprite(sprite_data, 5, 5);
  
- // Rendered at X and Y
+ //Render Bitmap at x & y
  sprite.render(lcd, _x, _y);
 }
-
+//Update direction and movement of Character
 void Character::update(Direction d)
 {
     _speed = 1; //scale of speed
-    //printf statements for speed
     //pcc.printf("speed = %d \n", _speed);
     // update x and y value depending on direction of movement
     // Set direction and speed according to north south directions
@@ -80,6 +79,7 @@ void Character::update(Direction d)
     if (_x > 79){ _x = 79; }
     if (_y > 43){ _y = 43; }
     }
+//Accessor and Mutator Functions
 int Character::get_x()
 {   
     return _x;
@@ -93,6 +93,7 @@ int Character::get_y()
 int Character::get_direction(){
     return _dir;
     }
+//Resets Character to original position and direction
 void Character::reset(){
     _x = 40;
     _y = 22;
