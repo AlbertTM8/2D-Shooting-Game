@@ -10,7 +10,7 @@ Student ID Number:201241153
 Date:10/4/2020
 */
 
-// includes
+// INCLUDES
 #include "mbed.h"
 #include "Gamepad.h"
 #include "N5110.h"
@@ -68,7 +68,7 @@ void DeathAnimation();
 //FUNCTIONS
 int main()      //pc.printf("Main Open");
 {
-    pad.init();      //initial setups
+        pad.init();      //initial setups
     lcd.init();
     lcd.clear();
     //pc.printf("CoolTerm is Connected\n");
@@ -191,7 +191,7 @@ void PlayerDead() //Called When Player Dies, B returns the game to menu
     lcd.clear();
     lcd.printString("YOU DIED",18,1);
     char buffer[14];
-    if(score > 10) {  //score displays differently if below 10 to make sure the text is centered
+    if(score >= 10) {  //score displays differently if below 10 to make sure the text is centered
         sprintf(buffer, "   Score:%d", score);
         lcd.printString(buffer,0,2);
     } else {
